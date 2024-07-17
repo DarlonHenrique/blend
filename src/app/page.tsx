@@ -177,8 +177,9 @@ type RestaurantsRemaningProps = {
 };
 
 const RestaurantsRemaning = ({ remaning }: RestaurantsRemaningProps) => {
-  const max = initialCards.length;
-  const current = max - remaning + 1;
+  const percentage = Math.round(
+    ((initialCards.length - remaning) / initialCards.length) * 100
+  );
 
   return (
     <motion.section
@@ -189,15 +190,13 @@ const RestaurantsRemaning = ({ remaning }: RestaurantsRemaningProps) => {
         <span className="w-[2ch] inline-block">{remaning}</span> Restaurants
         left to vote on
       </span>
-      <div
-        className={`grid grid-cols-[repeat(${max},_1fr)] bg-[#E7E5DB] rounded-full flex-grow overflow-hidden`}
-      >
+      <div className={`bg-[#E7E5DB] rounded-full flex-grow overflow-hidden`}>
         <motion.div
           layout
-          className={cn(
-            current >= 2 ? `col-[1_/_${current}]` : `w-2`,
-            `bg-[#15A154] h-full`
-          )}
+          animate={{
+            width: `${percentage}%`,
+          }}
+          className={cn(`bg-[#15A154] h-full min-w-2`)}
         />
       </div>
     </motion.section>
@@ -259,7 +258,7 @@ const Cards = ({ cards, setVotes, setCards, position }: CardsProps) => {
               });
             }}
             dragConstraints={constraintsRef}
-            className="aspect-[382/471] touch-none flex items-center justify-center rounded-[20px] absolute w-[80dvw] border border-[#E4E3E1] bg-white shadow"
+            className="aspect-[382/471] touch-none flex items-center justify-center rounded-[20px] absolute w-[60dvw] border border-[#E4E3E1] bg-white shadow"
             style={{
               x: isTopCard ? position : undefined,
             }}
